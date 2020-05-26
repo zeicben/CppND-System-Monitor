@@ -30,7 +30,6 @@ float Process::CpuUtilization() const {
   float starttime;
   float total_time;
   float seconds;
-  // Create an input filestream object
 
   std::ifstream file(LinuxParser::kProcDirectory + to_string(_id) +
                      LinuxParser::kStatFilename);

@@ -44,6 +44,7 @@ string LinuxParser::OperatingSystem() {
       }
     }
   }
+  filestream.close();
   // Return empty string if finding the OS name failed
   return value;
 }
@@ -58,6 +59,7 @@ string LinuxParser::Kernel() {
     std::istringstream linestream(line);
     linestream >> os >> version >> kernel;
   }
+  stream.close();
   return kernel;
 }
 
@@ -115,6 +117,7 @@ float LinuxParser::MemoryUtilization() {
       }
     }
   }
+  filestream.close();
   return (mem_total - mem_free) / mem_total;
 }
 
@@ -135,6 +138,7 @@ long LinuxParser::UpTime() {
     // `up_time` is float, so before casting it to long, we turn it into float
     return long(stof(up_time));
   }
+  filestream.close();
   // In case of failure, return 0
   return 0;
 }
@@ -178,7 +182,7 @@ long LinuxParser::ActiveJiffies(int pid) {
       }
     }
   }
-
+  file.close();
   return utime + stime + cutime + cstime;
 }
 
@@ -199,9 +203,6 @@ long LinuxParser::IdleJiffies() {
 
 // DONE: Read and return CPU utilization
 vector<string> LinuxParser::CpuUtilization() {
-  // string user, nice, system, idle, iowait, irq, softirq, steal, guest,
-  //     guest_nice;
-  // long idle_r, non_idle_r;
   string line;
   string str;
   vector<string> cpu_data{};
@@ -218,22 +219,12 @@ vector<string> LinuxParser::CpuUtilization() {
           while (linestream >> str) {
             cpu_data.push_back(str);
           }
-          // linestream >> user >> nice >> system >> idle >> iowait >> softirq
-          // >>
-          //     steal >> guest >> guest_nice;
-
-          // idle_r = std::stol(idle) + std::stol(iowait);
-          // non_idle_r = std::stol(user) + std::stol(nice) + std::stol(system)
-          // +
-          //            std::stol(irq) + std::stol(softirq) + std::stol(steal);
-
-          // return std::to_string(idle_r / (idle_r + non_idle_r));
           return cpu_data;
         }
       }
     }
   }
-
+  filestream.close();
   return cpu_data;
 }
 
@@ -260,6 +251,7 @@ int LinuxParser::TotalProcesses() {
       }
     }
   }
+  fstream.close();
   return 0;
 }
 
@@ -286,6 +278,7 @@ int LinuxParser::RunningProcesses() {
       }
     }
   }
+  fstream.close();
   return 0;
 }
 
@@ -338,7 +331,7 @@ string LinuxParser::Ram(int pid) {
       }
     }
   }
-
+  file_stream.close();
   return "0 Mb";
 }
 
@@ -375,7 +368,7 @@ string LinuxParser::Uid(int pid) {
       }
     }
   }
-
+  file_stream.close();
   return string();
 }
 
@@ -399,7 +392,7 @@ string LinuxParser::User(int pid) {
       }
     }
   }
-
+  file_stream.close();
   return string();
 }
 
@@ -426,5 +419,6 @@ long LinuxParser::UpTime(int pid) {
       }
     }
   }
+  file_stream.close();
   return 0;
 }
